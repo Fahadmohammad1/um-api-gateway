@@ -3,7 +3,7 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 import validateRequest from '../../middlewares/validateRequest';
 import auth from '../../middlewares/auth';
 import { AcademicDepartmentController } from './academicDepartment.controller';
-import { AcademicDepartmentValidation } from './academicDepartment.validation';
+import { AcademicDepartmentValidation } from './academicDepartment.validations';
 
 const router = express.Router();
 

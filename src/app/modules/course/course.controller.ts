@@ -1,19 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import sendResponse from '../../../shared/response';
-import { AcademicFacultyService } from './academicFaculty.service';
+import { RoomService } from './course.service';
 
 const getAllFromDB = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await AcademicFacultyService.getAllFromDB(req);
-    sendResponse(res, result);
-  } catch (error) {
-    next(error);
-  }
-};
-
-const insertIntoDB = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const result = await AcademicFacultyService.insertIntoDB(req);
+    const result = await RoomService.getAllFromDB(req);
     sendResponse(res, result);
   } catch (error) {
     next(error);
@@ -22,7 +13,15 @@ const insertIntoDB = async (req: Request, res: Response, next: NextFunction) => 
 
 const getByIdFromDB = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await AcademicFacultyService.getByIdFromDB(req);
+    const result = await RoomService.getByIdFromDB(req);
+    sendResponse(res, result);
+  } catch (error) {
+    next(error);
+  }
+};
+const insertIntoDB = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await RoomService.insertIntoDB(req);
     sendResponse(res, result);
   } catch (error) {
     next(error);
@@ -31,7 +30,7 @@ const getByIdFromDB = async (req: Request, res: Response, next: NextFunction) =>
 
 const updateOneInDB = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await AcademicFacultyService.updateOneInDB(req);
+    const result = await RoomService.updateOneInDB(req);
     sendResponse(res, result);
   } catch (error) {
     next(error);
@@ -40,14 +39,14 @@ const updateOneInDB = async (req: Request, res: Response, next: NextFunction) =>
 
 const deleteByIdFromDB = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await AcademicFacultyService.deleteByIdFromDB(req);
+    const result = await RoomService.deleteByIdFromDB(req);
     sendResponse(res, result);
   } catch (error) {
     next(error);
   }
 };
 
-export const AcademicFacultyController = {
+export const CourseController = {
   getAllFromDB,
   getByIdFromDB,
   updateOneInDB,
