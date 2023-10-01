@@ -1,21 +1,40 @@
 import { v2 as cloudinary } from 'cloudinary';
+import multer from 'multer';
+import * as fs from 'fs';
+import config from '../config';
+import { ICloudinaryResponse, IUploadFile } from '../interfaces/file';
 
 cloudinary.config({
-  cloud_name: 'ddzuj6trp',
-  api_key: '359648743918412',
-  api_secret: '8vjnPyUHd4WglBxAr0ea0wg_pWU'
+  cloud_name: config.cloudinary.cloudName,
+  api_key: config.cloudinary.apiKey,
+  api_secret: config.cloudinary.apiSecret
 });
 
-const uploadToCloudinary = async () => {
-  cloudinary.uploader.upload(
-    'https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg',
-    { public_id: 'olympic_flag' },
-    function (error, result) {
-      console.log(result);
-    }
-  );
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+
+const uploadToCloudinary = async (file: IUploadFile): Promise<ICloudinaryResponse | undefined> => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload(file.path, (error: Error, result: ICloudinaryResponse) => {
+      fs.unlinkSync(file.path);
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
 };
 
 export const FileUploadHelper = {
-  uploadToCloudinary
+  uploadToCloudinary,
+  upload
 };
